@@ -1,32 +1,50 @@
 package entertainment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Video {
 	private String title;
-	private int release_year;
-	List<Genre> genres;
+	private int year;
+	private ArrayList<String> cast;
+	private ArrayList<String> genres;
 	
-	public Video(String title, int release_year) {
-		this.genres = new ArrayList<>();
+	public Video(String title, int year, ArrayList<String> cast,
+				                                     ArrayList<String> genres) {
 		this.title = title;
-		this.release_year = release_year;
+		this.year = year;
+		this.cast = cast;
+		this.genres = genres;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
-	public int getRelease_year() {
-		return release_year;
-	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	public void setRelease_year(int release_year) {
-		this.release_year = release_year;
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public ArrayList<String> getCast() {
+		return cast;
+	}
+
+	public void setCast(ArrayList<String> cast) {
+		this.cast = cast;
+	}
+
+	public ArrayList<String> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(ArrayList<String> genres) {
+		this.genres = genres;
 	}
 }

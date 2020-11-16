@@ -1,2 +1,63 @@
 Starting audit...
-Audit done.
+[ERROR] /home/alex/Desktop/tema1/./src/user/User.java:4: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/user/User.java:4:1: File contains tab characters (this is the first instance). [FileTabCharacter]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:4:1: File contains tab characters (this is the first instance). [FileTabCharacter]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:9: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:10:22: Parameter title should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:10:36: Parameter release_year should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:10:40: Name 'release_year' must match pattern '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:10:54: Parameter duration should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:10:68: Parameter rating should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:15: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:16:9: Class 'Movie' looks like designed for extension (can be subclassed), but the method 'getDuration' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Movie' final or making the method 'getDuration' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:19: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:20:9: Class 'Movie' looks like designed for extension (can be subclassed), but the method 'getRating' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Movie' final or making the method 'getRating' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:23: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:24:9: Class 'Movie' looks like designed for extension (can be subclassed), but the method 'setDuration' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Movie' final or making the method 'setDuration' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:24:33: Parameter duration should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:27: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:28:9: Class 'Movie' looks like designed for extension (can be subclassed), but the method 'setRating' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Movie' final or making the method 'setRating' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Movie.java:28:31: Parameter rating should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Series.java:4:1: File contains tab characters (this is the first instance). [FileTabCharacter]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Series.java:4:23: Parameter title should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Series.java:4:37: Parameter release_year should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Series.java:4:41: Name 'release_year' must match pattern '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:7:1: File contains tab characters (this is the first instance). [FileTabCharacter]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:8:21: Name 'release_year' must match pattern '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:9:21: Variable 'genres' must be private and have accessor methods. [VisibilityModifier]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:10: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:11:22: Parameter title should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:11:36: Parameter release_year should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:11:40: Name 'release_year' must match pattern '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:16: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:17:9: Class 'Video' looks like designed for extension (can be subclassed), but the method 'getTitle' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Video' final or making the method 'getTitle' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:20: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:21:9: Class 'Video' looks like designed for extension (can be subclassed), but the method 'getRelease_year' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Video' final or making the method 'getRelease_year' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:21:20: Name 'getRelease_year' must match pattern '^[a-z][a-zA-Z0-9]*$'. [MethodName]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:24: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:25:9: Class 'Video' looks like designed for extension (can be subclassed), but the method 'setTitle' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Video' final or making the method 'setTitle' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:25:30: Parameter title should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:28: Line has trailing spaces. [RegexpSingleline]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:29:9: Class 'Video' looks like designed for extension (can be subclassed), but the method 'setRelease_year' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Video' final or making the method 'setRelease_year' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:29:21: Name 'setRelease_year' must match pattern '^[a-z][a-zA-Z0-9]*$'. [MethodName]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:29:37: Parameter release_year should be final. [FinalParameters]
+[ERROR] /home/alex/Desktop/tema1/./src/entertainment/Video.java:29:41: Name 'release_year' must match pattern '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+com.puppycrawl.tools.checkstyle.api.CheckstyleException: Exception was thrown while processing ./src/module-info.java
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:311)
+	at com.puppycrawl.tools.checkstyle.Checker.process(Checker.java:221)
+	at com.puppycrawl.tools.checkstyle.Main.runCheckstyle(Main.java:408)
+	at com.puppycrawl.tools.checkstyle.Main.runCli(Main.java:331)
+	at com.puppycrawl.tools.checkstyle.Main.execute(Main.java:190)
+	at com.puppycrawl.tools.checkstyle.Main.main(Main.java:125)
+Caused by: com.puppycrawl.tools.checkstyle.api.CheckstyleException: NoViableAltException occurred while parsing file /home/alex/Desktop/tema1/./src/module-info.java.
+	at com.puppycrawl.tools.checkstyle.JavaParser.parse(JavaParser.java:120)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.processFiltered(TreeWalker.java:149)
+	at com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck.process(AbstractFileSetCheck.java:87)
+	at com.puppycrawl.tools.checkstyle.Checker.processFile(Checker.java:337)
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:298)
+	... 5 more
+Caused by: /home/alex/Desktop/tema1/./src/module-info.java:1:1: unexpected token: module
+	at com.puppycrawl.tools.checkstyle.grammar.GeneratedJavaRecognizer.compilationUnit(GeneratedJavaRecognizer.java:191)
+	at com.puppycrawl.tools.checkstyle.JavaParser.parse(JavaParser.java:114)
+	... 9 more
+Checkstyle ends with 1 errors.

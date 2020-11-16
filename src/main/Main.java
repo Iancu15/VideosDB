@@ -3,16 +3,27 @@ package main;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
+import entertainment.Movie;
+import entertainment.Serial;
+import fileio.ActorInputData;
+import fileio.ClassInputData;
 import fileio.Input;
 import fileio.InputLoader;
+import fileio.UserInputData;
 import fileio.Writer;
+import user.User;
+
 import org.json.simple.JSONArray;
+
+import action.Action;
+import actor.Actor;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -69,9 +80,14 @@ public final class Main {
 
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
-
-        //TODO add here the entry point to your implementation
-
+        ClassInputData classinputdata = new ClassInputData();
+        
+        ArrayList<Actor> actors = classinputdata.getActors(input.getActors());
+        ArrayList<User> users = classinputdata.getUsers(input.getUsers());
+        ArrayList<Movie> movies = classinputdata.getMovies(input.getMovies());
+        ArrayList<Serial> serials = classinputdata.getSerials(input.getSerials());
+        ArrayList<Action> actions = classinputdata.getActions(input.getCommands());
+        
         fileWriter.closeJSON(arrayResult);
     }
 }
