@@ -1,6 +1,9 @@
 package action;
 
-public class Action {
+import main.Database;
+
+public abstract class Action {
+	protected String message;
 	private int actionId;
 	private String actionType;
 	/**
@@ -38,4 +41,17 @@ public class Action {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	/**
+     * Executa actiunea aferenta obiectului
+     */
+	public abstract void execute(Database db);
 }

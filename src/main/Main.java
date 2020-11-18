@@ -3,20 +3,9 @@ package main;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
-import entertainment.Movie;
-import entertainment.Serial;
-import fileio.ActorInputData;
-import fileio.ClassInputData;
 import fileio.Input;
 import fileio.InputLoader;
-import fileio.UserInputData;
-import fileio.Writer;
-import user.User;
-
-import org.json.simple.JSONArray;
-
-import action.Action;
-import actor.Actor;
+import fileio.WriterPRO;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +14,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import action.Action;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.
@@ -78,16 +69,15 @@ public final class Main {
         InputLoader inputLoader = new InputLoader(filePath1);
         Input input = inputLoader.readData();
 
-        Writer fileWriter = new Writer(filePath2);
-        JSONArray arrayResult = new JSONArray();
-        ClassInputData classinputdata = new ClassInputData();
+        WriterPRO writer = new WriterPRO(filePath2);
+        Database db = new Database(input);
+        ArrayList<Action> actions = db.getActions();
         
-        ArrayList<Actor> actors = classinputdata.getActors(input.getActors());
-        ArrayList<User> users = classinputdata.getUsers(input.getUsers());
-        ArrayList<Movie> movies = classinputdata.getMovies(input.getMovies());
-        ArrayList<Serial> serials = classinputdata.getSerials(input.getSerials());
-        ArrayList<Action> actions = classinputdata.getActions(input.getCommands());
+        for (Action action : actions) {
+        	action.execute(db);
+        	writer.addObject(action.getActionId(), action.getMessage());
+        }
         
-        fileWriter.closeJSON(arrayResult);
+        writer.writeFile();
     }
 }

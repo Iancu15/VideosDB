@@ -1,22 +1,26 @@
 package action;
 
+import main.Database;
+import user.User;
+
 public class Command extends Action {
-	private String user;
+	private String username;
 	private String title;
+	private Double grade;
 	
 	public Command(int actionId, String type, String actionType, String user, 
-																 String title) {
+												   String title, Double grade) {
 		super(actionId, actionType, type);
-		this.user = user;
+		this.username = user;
 		this.title = title;
 	}
 
 	public String getUser() {
-		return user;
+		return username;
 	}
 
 	public void setUser(String user) {
-		this.user = user;
+		this.username = user;
 	}
 
 	public String getTitle() {
@@ -25,5 +29,20 @@ public class Command extends Action {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Double grade) {
+		this.grade = grade;
+	}
+	
+	public void execute(Database db) {
+		if (this.getType().equals("view")) {
+			User user = db.getUser(this.username);
+			this.message = user.viewVideo(this.title);
+		}
 	}
 }

@@ -1,7 +1,9 @@
 package fileio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import action.Action;
 import action.Command;
@@ -14,8 +16,7 @@ import user.User;
 
 public class ClassInputData {
 	/**
-     * Transform un ArrayList<ActorInputData> intr-un ArrayList<Actor>
-     * iactors prescurtare de la input_actors, analog la celelalte clase
+     * Transforma un ArrayList<ActorInputData> intr-un ArrayList<Actor>
      */
 	public ArrayList<Actor> getActors(List<ActorInputData> input_actors) {
 	    ArrayList<ActorInputData> iactors;
@@ -33,25 +34,26 @@ public class ClassInputData {
 	}
 	
 	/**
-     * Transform un ArrayList<UserInputData> intr-un ArrayList<User>
+     * Transforma un ArrayList<UserInputData> intr-un Map<String, User> unde
+     * cheia este reprezentata de username
      */
-	public ArrayList<User> getUsers(List<UserInputData> input_users) {
+	public Map<String, User> getUsers(List<UserInputData> input_users) {
 		ArrayList<UserInputData> iusers;
 	    iusers = (ArrayList<UserInputData>) input_users;
-	    ArrayList<User> users = new ArrayList<User>();
+	    Map<String, User> users = new HashMap<>();
 	    
 	    for (UserInputData iuser : iusers) {
 	    	User user;
 	    	user = new User(iuser.getUsername(), iuser.getSubscriptionType(),
 	    				         iuser.getHistory(), iuser.getFavoriteMovies());
-	    	users.add(user);
+	    	users.put(iuser.getUsername(), user);
 	    }
 	    
 	    return users;
 	}
 	
 	/**
-     * Transform un ArrayList<MovieInputData> intr-un ArrayList<Movie>
+     * Transforma un ArrayList<MovieInputData> intr-un ArrayList<Movie>
      */
 	public ArrayList<Movie> getMovies(List<MovieInputData> input_movies) {
 		ArrayList<MovieInputData> imovies;
@@ -69,7 +71,7 @@ public class ClassInputData {
 	}
 	
 	/**
-     * Transform un ArrayList<SerialInputData> intr-un ArrayList<Serial>
+     * Transforma un ArrayList<SerialInputData> intr-un ArrayList<Serial>
      */
 	public ArrayList<Serial> getSerials(List<SerialInputData> input_serials) {
 		ArrayList<SerialInputData> iserials;
@@ -88,7 +90,7 @@ public class ClassInputData {
 	}
 	
 	/**
-     * Transform un ArrayList<ActionInputData> intr-un ArrayList<Serial>
+     * Transforma un ArrayList<ActionInputData> intr-un ArrayList<Serial>
      */
 	public ArrayList<Action> getActions(List<ActionInputData> input_actions) {
 		ArrayList<ActionInputData> iactions;
@@ -106,12 +108,12 @@ public class ClassInputData {
 	    	} else if (iaction.getTitle() != null) {
 	    		action = new Command(iaction.getActionId(), iaction.getType(),
 	    						iaction.getActionType(), iaction.getUsername(),
-	    												 iaction.getTitle());
+	    								iaction.getTitle(), iaction.getGrade());
 	    		
 	    	} else {
 	    		action = new Recommendation(iaction.getActionId(), 
 	    						     iaction.getType(), iaction.getActionType(),
-	    						               iaction.getUsername());
+	    						     iaction.getUsername(), iaction.getGenre());
 	    	}
 	    	
 	    	actions.add(action);

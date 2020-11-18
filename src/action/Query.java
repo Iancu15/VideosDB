@@ -2,6 +2,9 @@ package action;
 
 import java.util.List;
 
+import main.Database;
+import user.User;
+
 public class Query extends Action {
 	private int number;
 	private String sort_type;
@@ -67,5 +70,8 @@ public class Query extends Action {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public void execute(Database db) {
 	}
 }
