@@ -1,6 +1,7 @@
 package entertainment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Serial extends Video {
 	private int numberOfSeasons;
@@ -28,4 +29,11 @@ public class Serial extends Video {
 	public void setSeasons(ArrayList<Season> seasons) {
 		this.seasons = seasons;
 	}
+	
+    public void giveRating(Double grade, Integer season) {
+    	Season real_season = this.seasons.get(season - 1);
+    	List<Double> ratings = real_season.getRatings();
+    	ratings.add(grade);
+    	real_season.setRatings(ratings);
+    }
 }

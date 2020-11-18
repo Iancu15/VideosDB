@@ -53,37 +53,41 @@ public class ClassInputData {
 	}
 	
 	/**
-     * Transforma un ArrayList<MovieInputData> intr-un ArrayList<Movie>
+     * Transforma un ArrayList<MovieInputData> intr-un Map<String, Movier> unde
+     * cheia este reprezentata de username
      */
-	public ArrayList<Movie> getMovies(List<MovieInputData> input_movies) {
+	public Map<String, Movie> getMovies(List<MovieInputData> input_movies) {
 		ArrayList<MovieInputData> imovies;
 	    imovies = (ArrayList<MovieInputData>) input_movies;
-	    ArrayList<Movie> movies = new ArrayList<Movie>();
+	    Map<String, Movie> movies = new HashMap<>();
 	    
 	    for (MovieInputData imovie : imovies) {
 	    	Movie movie;
 	    	movie = new Movie(imovie.getTitle(), imovie.getYear(), 
 	    			imovie.getDuration(), imovie.getCast(), imovie.getGenres());
-	    	movies.add(movie);
+	    	
+	    	movies.put(movie.getTitle(), movie);
 	    }
 	    
 	    return movies;
 	}
 	
 	/**
-     * Transforma un ArrayList<SerialInputData> intr-un ArrayList<Serial>
+     * Transforma un ArrayList<UserInputData> intr-un Map<String, User> unde
+     * cheia este reprezentata de username
      */
-	public ArrayList<Serial> getSerials(List<SerialInputData> input_serials) {
+	public Map<String, Serial> getSerials(List<SerialInputData> input_serials) {
 		ArrayList<SerialInputData> iserials;
 	    iserials = (ArrayList<SerialInputData>) input_serials;
-	    ArrayList<Serial> serials = new ArrayList<Serial>();
+	    Map<String, Serial> serials = new HashMap<>();
 	    
 	    for (SerialInputData iserial : iserials) {
 	    	Serial serial;
 	    	serial = new Serial(iserial.getTitle(), iserial.getYear(), 
 	    								iserial.getCast(), iserial.getGenres(), 
 	    					   iserial.getNumberSeason(), iserial.getSeasons());
-	    	serials.add(serial);
+	    	
+	    	serials.put(serial.getTitle(), serial);
 	    }
 	    
 	    return serials;
@@ -108,7 +112,8 @@ public class ClassInputData {
 	    	} else if (iaction.getTitle() != null) {
 	    		action = new Command(iaction.getActionId(), iaction.getType(),
 	    						iaction.getActionType(), iaction.getUsername(),
-	    								iaction.getTitle(), iaction.getGrade());
+	    								iaction.getTitle(), iaction.getGrade(), 
+	    										 	iaction.getSeasonNumber());
 	    		
 	    	} else {
 	    		action = new Recommendation(iaction.getActionId(), 

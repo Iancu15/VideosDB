@@ -10,6 +10,7 @@ public class Recommendation extends Action {
 													String user, String genre) {
 		super(actionId, actionType, type);
 		this.user = user;
+		this.genre = genre;
 	}
 
 	public String getUser() {

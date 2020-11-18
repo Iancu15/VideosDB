@@ -7,6 +7,7 @@ import action.Action;
 import actor.Actor;
 import entertainment.Movie;
 import entertainment.Serial;
+import entertainment.Video;
 import fileio.ClassInputData;
 import fileio.Input;
 import user.User;
@@ -18,8 +19,8 @@ import user.User;
 public class Database {
 	private ArrayList<Actor> actors;
 	private Map<String, User> users;
-	private ArrayList<Movie> movies;
-	private ArrayList<Serial> serials;
+	private Map<String, Movie> movies;
+	private Map<String, Serial> serials;
 	private ArrayList<Action> actions;
 	
 	public Database(Input input) {
@@ -40,11 +41,11 @@ public class Database {
 		return users;
 	}
 
-	public ArrayList<Movie> getMovies() {
+	public Map<String, Movie> getMovies() {
 		return movies;
 	}
 
-	public ArrayList<Serial> getSerials() {
+	public Map<String, Serial> getSerials() {
 		return serials;
 	}
 
@@ -52,7 +53,20 @@ public class Database {
 		return actions;
 	}
 	
+	/**
+	 * Returneaza obiectul de tip User specific username-ului
+	 */
 	public User getUser(String username) {
 		return this.users.get(username);
+	}
+	
+	/**
+	 * Returneaza obiectul de tip Video specific titlului
+	 */
+	public Video getShow(String title) {
+		if (this.movies.containsKey(title))
+			return this.movies.get(title);
+		
+		return this.serials.get(title);
 	}
 }
