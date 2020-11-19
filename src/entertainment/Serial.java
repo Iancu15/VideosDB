@@ -29,11 +29,52 @@ public class Serial extends Video {
 	public void setSeasons(ArrayList<Season> seasons) {
 		this.seasons = seasons;
 	}
-	
+
+	/**
+     * Adauga nota data de un utilizator unui sezon in lista cu note a
+     * sezonului respectiv
+     */
     public void giveRating(Double grade, Integer season) {
-    	Season real_season = this.seasons.get(season - 1);
-    	List<Double> ratings = real_season.getRatings();
+    	Season realSeason = this.seasons.get(season - 1);
+    	List<Double> ratings = realSeason.getRatings();
     	ratings.add(grade);
-    	real_season.setRatings(ratings);
+    	realSeason.setRatings(ratings);
+    }
+    
+    /**
+     * Calculeaza media intre scorurile primite de fiecare sezon in parte
+     */
+    public Double calculateRating() {
+    	Double ratingSerial = 0.0;
+    	for (Season season : seasons) {
+    		Double ratingSeason = 0.0;
+    		List<Double> ratings = season.getRatings();
+    		
+    		if (!ratings.isEmpty()) {
+    			ratingSeason = this.calculateRatingSeason(ratings);
+    		}
+    		
+    		ratingSerial += ratingSeason;
+    	}
+    	
+    	this.rating = ratingSerial/this.numberOfSeasons;
+    	return this.rating;
+    }
+    
+    /**
+     * Calculeaza media notelor date unui sezon pe baza notelor date de catre
+     * utilizatori sezonului respectiv
+     */
+    private Double calculateRatingSeason(List<Double> ratings) {
+    	if (ratings.isEmpty()) {
+    		return 0.0;
+    	}
+    	
+    	Double ratingSeason = 0.0;
+    	for (Double rating : ratings) {
+    		ratingSeason += rating;
+    	}
+    	
+    	return ratingSeason/ratings.size();
     }
 }

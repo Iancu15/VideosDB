@@ -24,13 +24,13 @@ public class Database {
 	private ArrayList<Action> actions;
 	
 	public Database(Input input) {
-		ClassInputData classinputdata = new ClassInputData();
+		ClassInputData classInputData = new ClassInputData();
         
-        this.actors = classinputdata.getActors(input.getActors());
-        this.users = classinputdata.getUsers(input.getUsers());
-        this.movies = classinputdata.getMovies(input.getMovies());
-        this.serials = classinputdata.getSerials(input.getSerials());
-        this.actions = classinputdata.getActions(input.getCommands());
+        this.actors = classInputData.getActors(input.getActors());
+        this.users = classInputData.getUsers(input.getUsers());
+        this.movies = classInputData.getMovies(input.getMovies());
+        this.serials = classInputData.getSerials(input.getSerials());
+        this.actions = classInputData.getActions(input.getCommands());
 	}
 
 	public ArrayList<Actor> getActors() {
@@ -68,5 +68,31 @@ public class Database {
 			return this.movies.get(title);
 		
 		return this.serials.get(title);
+	}
+	
+	/**
+	 * Actualizeaza scorul filmelor si serialelor
+	 */
+	public void updateShows() {
+		for (Movie movie : this.movies.values()) {
+			movie.calculateRating();
+			System.out.println(movie.getTitle() + " " + movie.getRating());
+		}
+		
+		for (Serial serial : this.serials.values()) {
+			serial.calculateRating();
+			System.out.println(serial.getTitle() + " " + serial.getRating());
+		}
+	}
+	
+	/**
+	 * Actualizeaza scorul actorilor
+	 */
+	public void updateActors() {
+		for (Actor actor : this.actors) {
+			actor.calculateRating(this);
+			actor.calculateAwards();
+			System.out.println(actor.getName() + " " + actor.getRating() + " " + actor.getNumberOfAwards());
+		}
 	}
 }

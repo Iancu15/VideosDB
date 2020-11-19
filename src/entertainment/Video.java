@@ -2,11 +2,15 @@ package entertainment;
 
 import java.util.ArrayList;
 
-public class Video {
+public abstract class Video {
 	private String title;
 	private int year;
 	private ArrayList<String> cast;
 	private ArrayList<String> genres;
+	/**
+     * Media notelor primite de catre video
+     */
+	protected Double rating;
 	
 	public Video(String title, int year, ArrayList<String> cast,
 				                                     ArrayList<String> genres) {
@@ -14,6 +18,7 @@ public class Video {
 		this.year = year;
 		this.cast = cast;
 		this.genres = genres;
+		this.rating = 0.0;
 	}
 
 	public String getTitle() {
@@ -47,4 +52,17 @@ public class Video {
 	public void setGenres(ArrayList<String> genres) {
 		this.genres = genres;
 	}
+	
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+	
+    /**
+     * Calculeaza media notelor primite de catre video de la utilizatori
+     */
+	public abstract Double calculateRating();
 }

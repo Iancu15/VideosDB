@@ -117,7 +117,7 @@ public class ClassInputData {
 	    		
 	    	} else {
 	    		action = new Recommendation(iaction.getActionId(), 
-	    						     iaction.getType(), iaction.getActionType(),
+	    					   iaction.getActionType(), iaction.getActionType(),
 	    						     iaction.getUsername(), iaction.getGenre());
 	    	}
 	    	

@@ -51,16 +51,19 @@ public class Command extends Action {
 		this.username = username;
 	}
 
+	/**
+     * Executa comanda in functie de tipul comenzii si creeaza mesajul
+     * instantei curente
+     */
 	public void execute(Database db) {
 		User user = db.getUser(this.username);
 		Video show = db.getShow(this.title);
 		
-		if (this.getType().equals("view")) {
+		if (this.getType().equals("view"))
 			this.message = user.viewVideo(this.title);
-		} else if (this.getType().equals("favorite")) {
+		else if (this.getType().equals("favorite"))
 			this.message = user.addFavourite(title);
-		} else {
+		else
 			this.message = user.giveRating(show, this.grade, season);
-		}
 	}
 }

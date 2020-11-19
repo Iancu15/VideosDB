@@ -3,11 +3,22 @@ package actor;
 import java.util.ArrayList;
 import java.util.Map;
 
+import entertainment.Video;
+import main.Database;
+
 public class Actor {
 	private String name;
 	private String careerDescription;
 	private ArrayList<String> filmography;
 	private Map<ActorsAwards, Integer> awards;
+	/**
+	 * Media scorurilor obtinute de filmele si serialele in care a jucat
+	 */
+	private Double rating;
+	/**
+	 * Numarul de premii obtinute de actor
+	 */
+	private Integer numberOfAwards;
 	
 	public Actor(String name,  String careerDescription,
 		    ArrayList<String> filmography,  Map<ActorsAwards, Integer> awards) {
@@ -15,6 +26,8 @@ public class Actor {
 		this.careerDescription = careerDescription;
 		this.filmography = filmography;
 		this.awards = awards;
+		this.rating = 0.0;
+		this.numberOfAwards = 0;
 	}
 	
 	public String getName() {
@@ -40,5 +53,48 @@ public class Actor {
 	}
 	public void setAwards(Map<ActorsAwards, Integer> awards) {
 		this.awards = awards;
+	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+
+	public Integer getNumberOfAwards() {
+		return numberOfAwards;
+	}
+
+	public void setNumberOfAwards(Integer numberOfAwards) {
+		this.numberOfAwards = numberOfAwards;
+	}
+
+	/**
+	 * Calculeaza scorul actorului curent facand media scorurilor obtinute
+	 * de filmele si serialele in care a jucat
+	 */
+	public void calculateRating(Database db) {
+		Double ratingActor = 0.0;
+		int numberOfRatedShows = 0;
+		for (String showTitle : filmography) {
+			Video show = db.getShow(showTitle);
+			if (show != null) {
+				Double ratingShow = show.getRating();
+				if (ratingShow != 0) {
+					ratingActor += ratingShow;
+					numberOfRatedShows++;
+				}
+			}
+		}
+		
+		this.rating = ratingActor/numberOfRatedShows;
+	}
+	
+	public void calculateAwards() {
+		for (Integer numberOfAwards : this.awards.values()) {
+			this.numberOfAwards += numberOfAwards;
+		}
 	}
 }

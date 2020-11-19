@@ -3,10 +3,10 @@ package entertainment;
 import java.util.ArrayList;
 
 public class Movie extends Video {
-	/**
-     * Duration in minutes of a movie
-     */
 	private int duration;
+	/**
+     * O lista cu notele date de utilizatori
+     */
 	private ArrayList<Double> ratings;
 	
 	public Movie(String title, int year, int duration, ArrayList<String> cast,
@@ -20,7 +20,7 @@ public class Movie extends Video {
 		return duration;
 	}
 	
-	public ArrayList<Double> getRating() {
+	public ArrayList<Double> getRatings() {
 		return ratings;
 	}
 	
@@ -28,11 +28,32 @@ public class Movie extends Video {
 		this.duration = duration;
 	}
 	
-	public void setRating(ArrayList<Double> rating) {
+	public void setRatings(ArrayList<Double> rating) {
 		this.ratings = rating;
 	}
 	
+	/**
+     * Adauga o nota data de un utilizator, nu se specifica utilizatorul
+     */
 	public void giveRating(Double grade) {
 		this.ratings.add(grade);
 	}
+	
+	/**
+     * Calculeaza media notelor date de utilizatori filmului
+     */
+    public Double calculateRating() {
+    	if (this.ratings.isEmpty()) {
+    		this.rating = 0.0;
+    		return this.rating;
+    	}
+    	
+    	Double ratingMovie = 0.0;
+    	for (Double rating : this.ratings) {
+    		ratingMovie += rating;
+    	}
+    	
+    	this.rating = ratingMovie/this.ratings.size();
+    	return this.rating;
+    }
 }

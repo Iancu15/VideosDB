@@ -108,7 +108,7 @@ public class User {
 			return "fail -> You didn't watch the movie";
 		
 		if (this.ratedMovies.contains(title))
-			return "fail -> You already graded the movie";
+			return "error -> " + title + " has been already rated";
 		
 		this.ratedMovies.add(title);
 		Movie movie = (Movie) show;
@@ -142,6 +142,8 @@ public class User {
 			
 			seasons.add(season);
 			this.ratedSerials.replace(title, seasons);
+			Serial serial = (Serial) show;
+			serial.giveRating(grade, season);
 			return "success -> " + title + " was rated with " + grade + " by " +
 			this.username;
 		}
