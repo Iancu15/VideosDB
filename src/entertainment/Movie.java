@@ -3,7 +3,6 @@ package entertainment;
 import java.util.ArrayList;
 
 public class Movie extends Video {
-	private int duration;
 	/**
      * O lista cu notele date de utilizatori
      */
@@ -16,16 +15,8 @@ public class Movie extends Video {
 		this.ratings = new ArrayList<Double>();
 	}
 	
-	public int getDuration() {
-		return duration;
-	}
-	
 	public ArrayList<Double> getRatings() {
 		return ratings;
-	}
-	
-	public void setDuration(int duration) {
-		this.duration = duration;
 	}
 	
 	public void setRatings(ArrayList<Double> rating) {

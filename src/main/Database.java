@@ -22,6 +22,7 @@ public class Database {
 	private Map<String, Movie> movies;
 	private Map<String, Serial> serials;
 	private ArrayList<Action> actions;
+	private ArrayList<Video> shows;
 	
 	public Database(Input input) {
 		ClassInputData classInputData = new ClassInputData();
@@ -31,6 +32,10 @@ public class Database {
         this.movies = classInputData.getMovies(input.getMovies());
         this.serials = classInputData.getSerials(input.getSerials());
         this.actions = classInputData.getActions(input.getCommands());
+        
+        this.shows = new ArrayList<Video>();
+        this.shows.addAll(this.serials.values());
+        this.shows.addAll(this.movies.values());
 	}
 
 	public ArrayList<Actor> getActors() {
@@ -53,6 +58,10 @@ public class Database {
 		return actions;
 	}
 	
+	public ArrayList<Video> getShows() {
+		return shows;
+	}
+
 	/**
 	 * Returneaza obiectul de tip User specific username-ului
 	 */
@@ -71,28 +80,22 @@ public class Database {
 	}
 	
 	/**
-	 * Actualizeaza scorul filmelor si serialelor
+	 * Actualizeaza datele neconstante ale video-urilor
 	 */
 	public void updateShows() {
-		for (Movie movie : this.movies.values()) {
-			movie.calculateRating();
-			System.out.println(movie.getTitle() + " " + movie.getRating());
-		}
-		
-		for (Serial serial : this.serials.values()) {
-			serial.calculateRating();
-			System.out.println(serial.getTitle() + " " + serial.getRating());
+		for (Video show : this.shows) {
+			show.calculateRating();
+			show.calculateViews(this);
+			show.calculateFavorites(this);
 		}
 	}
 	
 	/**
-	 * Actualizeaza scorul actorilor
+	 * Actualizeaza datele neconstante ale actorilor
 	 */
 	public void updateActors() {
 		for (Actor actor : this.actors) {
 			actor.calculateRating(this);
-			actor.calculateAwards();
-			System.out.println(actor.getName() + " " + actor.getRating() + " " + actor.getNumberOfAwards());
 		}
 	}
 }

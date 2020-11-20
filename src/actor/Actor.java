@@ -18,7 +18,7 @@ public class Actor {
 	/**
 	 * Numarul de premii obtinute de actor
 	 */
-	private Integer numberOfAwards;
+	private Integer numberOfAwards = 0;
 	
 	public Actor(String name,  String careerDescription,
 		    ArrayList<String> filmography,  Map<ActorsAwards, Integer> awards) {
@@ -27,7 +27,7 @@ public class Actor {
 		this.filmography = filmography;
 		this.awards = awards;
 		this.rating = 0.0;
-		this.numberOfAwards = 0;
+		this.calculateAwards();
 	}
 	
 	public String getName() {
@@ -92,6 +92,9 @@ public class Actor {
 		this.rating = ratingActor/numberOfRatedShows;
 	}
 	
+	/**
+	 * Calculeaza numarul total de premii detinute de actor
+	 */
 	public void calculateAwards() {
 		for (Integer numberOfAwards : this.awards.values()) {
 			this.numberOfAwards += numberOfAwards;

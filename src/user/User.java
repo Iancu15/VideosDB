@@ -13,27 +13,29 @@ public class User {
 	private String subscriptionType;
 	private Map<String, Integer> history;
 	private ArrayList<String> favoriteShows;
-	
 	/**
 	 * O lista cu filmele care au primit nota de la utilizator
 	 */
 	private ArrayList<String> ratedMovies;
-	
 	/**
 	 * Un hashmap cu cheia titlul serialului si valoarea sezoanele care au
 	 * primit nota de la utilizator
 	 */
 	private Map<String, ArrayList<Integer>> ratedSerials;
+	/**
+	 * Variabila retine numarul de scoruri oferite de utilizator;
+	 */
+	private Integer numberOfRatings;
 	
 	public User(String username, String subscriptionType, 
 			   Map<String, Integer> history, ArrayList<String> favoriteShows) {
-		super();
 		this.username = username;
 		this.subscriptionType = subscriptionType;
 		this.history = history;
 		this.favoriteShows = favoriteShows;
 		this.ratedSerials = new HashMap<>();
 		this.ratedMovies = new ArrayList<String>();
+		this.numberOfRatings = 0;
 	}
 
 	public String getUsername() {
@@ -68,6 +70,30 @@ public class User {
 		this.favoriteShows = favoriteShows;
 	}
 
+	public ArrayList<String> getRatedMovies() {
+		return ratedMovies;
+	}
+
+	public void setRatedMovies(ArrayList<String> ratedMovies) {
+		this.ratedMovies = ratedMovies;
+	}
+
+	public Map<String, ArrayList<Integer>> getRatedSerials() {
+		return ratedSerials;
+	}
+
+	public void setRatedSerials(Map<String, ArrayList<Integer>> ratedSerials) {
+		this.ratedSerials = ratedSerials;
+	}
+
+	public Integer getNumberOfRatings() {
+		return numberOfRatings;
+	}
+
+	public void setNumberOfRatings(Integer numberOfRatings) {
+		this.numberOfRatings = numberOfRatings;
+	}
+
 	/**
 	 * Incrementeaza numarul de vizualizari daca a show-ul a fost deja
 	 * vizualizat de user, in caz contrar il adauga in istoric cu numarul
@@ -84,9 +110,11 @@ public class User {
 	}
 	
 	/**
-	 * Adauga un show la favorite daca n-a fost deja adaugat
+	 * Adauga un show la favorite daca n-a fost deja adaugat si incrementeaza
+	 * numarul de favorite primite de show
 	 */
-	public String addFavourite(String title) {
+	public String addFavourite(Video show) {
+		String title = show.getTitle();
 		if (!this.favoriteShows.contains(title)) {
 			this.favoriteShows.add(title);
 			return "success -> " + title + " was added as favourite";
@@ -105,7 +133,7 @@ public class User {
 		String title = show.getTitle();
 		
 		if (!this.history.containsKey(title)) 
-			return "fail -> You didn't watch the movie";
+			return "error -> " + title + " is not seen";
 		
 		if (this.ratedMovies.contains(title))
 			return "error -> " + title + " has been already rated";
@@ -113,6 +141,7 @@ public class User {
 		this.ratedMovies.add(title);
 		Movie movie = (Movie) show;
 		movie.giveRating(grade);
+		this.numberOfRatings++;
 		
 		return "success -> " + title + " was rated with " + grade + " by " +
 															this.username;
@@ -133,19 +162,21 @@ public class User {
 		String title = show.getTitle();
 					
 		if (!this.history.containsKey(title)) 
-			return "fail -> You didn't watch the serial";
+			return "error -> " + title + " is not seen";
 		
 		if (this.ratedSerials.containsKey(title)) {
 			ArrayList<Integer> seasons = this.ratedSerials.get(title);
 			if (seasons.contains(season))
-				return "fail -> You already graded the season";
+				return "error -> " + title + " has been already rated";
 			
 			seasons.add(season);
 			this.ratedSerials.replace(title, seasons);
 			Serial serial = (Serial) show;
 			serial.giveRating(grade, season);
+			this.numberOfRatings++;
+			
 			return "success -> " + title + " was rated with " + grade + " by " +
-			this.username;
+																this.username;
 		}
 		
 		ArrayList<Integer> seasons = new ArrayList<Integer>();
@@ -153,8 +184,9 @@ public class User {
 		this.ratedSerials.put(title, seasons);
 		Serial serial = (Serial) show;
 		serial.giveRating(grade, season);
+		this.numberOfRatings++;
 		
 		return "success -> " + title + " was rated with " + grade + " by " +
-		this.username;
+																	this.username;
 	}
 }

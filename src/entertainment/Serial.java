@@ -12,6 +12,7 @@ public class Serial extends Video {
 		super(title, year, cast, genres);
 		this.numberOfSeasons = numberOfSeasons;
 		this.seasons = seasons;
+		this.calculateDuration();
 	}
 
 	public int getNumberOfSeasons() {
@@ -28,6 +29,14 @@ public class Serial extends Video {
 
 	public void setSeasons(ArrayList<Season> seasons) {
 		this.seasons = seasons;
+	}
+	
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
 	}
 
 	/**
@@ -76,5 +85,17 @@ public class Serial extends Video {
     	}
     	
     	return ratingSeason/ratings.size();
+    }
+    
+    /**
+     * Calculeaza durata intregului serial in minute
+     */
+    public void calculateDuration() {
+    	int duration = 0;
+    	for (Season season : seasons) {
+    		duration += season.getDuration();
+    	}
+    	
+    	this.duration = duration;
     }
 }

@@ -71,7 +71,7 @@ public class Query extends Action {
 			if (filters.get(index).isEmpty())
 				return null;
 			
-			return filters.get(index).get(index);
+			return filters.get(index).get(0);
 		} catch (Exception ExceptionOutOfBound) {
 			return null;
 		}
@@ -83,29 +83,42 @@ public class Query extends Action {
 	public void execute(Database db) {
 		db.updateShows();
 		db.updateActors();
+		ArrayList<User> users = new ArrayList<User>(db.getUsers().values());
 		
 		if (this.getType().equals("actors")) {
 			this.sortActors(db.getActors());
-		} else if (this.getType().equals("movies")) {
-			//
-		} else if (this.getType().equals("shows")){
-			//
+		} else if (this.getType().equals("users")) {
+			this.sortUsers(users);
 		} else {
-			//
+			this.sortShows(db.getShows());
 		}
 	}
 	
 	/**
      * Clasa de tip Comparator care compara evaluarea a 2 actori, daca cei
-     * 2 actori au acelasi scor se compara lexicografic
+     * 2 actori au acelasi scor se compara lexicografic dupa nume
      */
-	private class RatingComparator implements Comparator<Actor> {
+	private class ActorRatingComparator implements Comparator<Actor> {
 		@Override
 		public int compare(Actor actor1, Actor actor2) {
 			if (actor1.getRating().compareTo(actor2.getRating()) == 0)
 				return actor1.getName().compareTo(actor2.getName());
 			
 			return actor1.getRating().compareTo(actor2.getRating());
+	    }
+	}
+	
+	/**
+     * Clasa de tip Comparator care compara evaluarea a 2 video-uri, daca cele
+     * 2 video-uri au acelasi scor se compara lexicografic dupa titlu
+     */
+	private class ShowRatingComparator implements Comparator<Video> {
+		@Override
+		public int compare(Video video1, Video video2) {
+			if (video1.getRating().compareTo(video2.getRating()) == 0)
+				return video1.getTitle().compareTo(video2.getTitle());
+			
+			return video1.getRating().compareTo(video2.getRating());
 	    }
 	}
 	
@@ -135,11 +148,118 @@ public class Query extends Action {
 	}
 	
 	/**
+     * Clasa de tip Comparator care compara durata a 2 video-uri, daca cele
+     * 2 video-uri au aceeasi durata se compara lexicografic dupa titlu
+     */
+	private class DurationComparator implements Comparator<Video> {
+		@Override
+		public int compare(Video video1, Video video2) {
+			if (video1.getDuration().compareTo(video2.getDuration()) == 0)
+				return video1.getTitle().compareTo(video2.getTitle());
+			
+			return video1.getDuration().compareTo(video2.getDuration());
+	    }
+	}
+	
+	/**
+     * Clasa de tip Comparator care compara numarul de selectari drept favorit
+     * a 2 video-uri, daca cele 2 video-uri sunt la fel de placute se compara 
+     * lexicografic dupa titlu
+     */
+	private class FavoriteComparator implements Comparator<Video> {
+		@Override
+		public int compare(Video video1, Video video2) {
+			if (video1.getNumberOfFavorites().compareTo(video2.getNumberOfFavorites()) == 0)
+				return video1.getTitle().compareTo(video2.getTitle());
+			
+			return video1.getNumberOfFavorites().compareTo(video2.getNumberOfFavorites());
+	    }
+	}
+	
+	/**
+     * Clasa de tip Comparator care compara numarul de vizualizari a 2 video-uri
+     * , daca cele 2 video-uri au acelasi numar de vizualizari se compara 
+     * lexicografic dupa titlu
+     */
+	private class ViewsComparator implements Comparator<Video> {
+		@Override
+		public int compare(Video video1, Video video2) {
+			if (video1.getNumberOfViews().compareTo(video2.getNumberOfViews()) == 0)
+				return video1.getTitle().compareTo(video2.getTitle());
+			
+			return video1.getNumberOfViews().compareTo(video2.getNumberOfViews());
+	    }
+	}
+	
+	/**
+     * Clasa de tip Comparator care numarul de evaluari oferite de 2 utilizatori
+     * , daca cei 2 utilizatori sunt la fel de critici atunci se compara
+     * lexicografic dupa username
+     */
+	private class NumberOfRatingsComparator implements Comparator<User> {
+		@Override
+		public int compare(User user1, User user2) {
+			if (user1.getNumberOfRatings().compareTo(user2.getNumberOfRatings()) == 0)
+				return user1.getUsername().compareTo(user2.getUsername());
+			
+			return user1.getNumberOfRatings().compareTo(user2.getNumberOfRatings());
+	    }
+	}
+	
+	/**
+     * Creeaza mesajul ce va reprezenta raspunsul cautarii utilizatorului pentru
+     * o interogare dupa actori
+     */
+	private void createMessageActor(ArrayList<Actor> actors) {
+		ArrayList<String> actorNames = new ArrayList<String>();
+		for (int i = 0; i < this.number; i++) {
+			if (i == actors.size())
+				break;
+			
+			actorNames.add(actors.get(i).getName());
+		}
+		
+		this.message = "Query result: " + actorNames.toString();
+	}
+	
+	/**
+     * Creeaza mesajul ce va reprezenta raspunsul cautarii utilizatorului pentru
+     * o interogare dupa video-uri
+     */
+	private void createMessageShow(ArrayList<Video> shows) {
+		ArrayList<String> showNames = new ArrayList<String>();
+		for (int i = 0; i < this.number; i++) {
+			if (i == shows.size())
+				break;
+			
+			showNames.add(shows.get(i).getTitle());
+		}
+		
+		this.message = "Query result: " + showNames.toString();
+	}
+	
+	/**
+     * Creeaza mesajul ce va reprezenta raspunsul cautarii utilizatorului pentru
+     * o interogare dupa alti utilizatori
+     */
+	private void createMessageUser(ArrayList<User> users) {
+		ArrayList<String> userNames = new ArrayList<String>();
+		for (int i = 0; i < this.number; i++) {
+			if (i == users.size())
+				break;
+			
+			userNames.add(users.get(i).getUsername());
+		}
+		
+		this.message = "Query result: " + userNames.toString();
+	}
+	
+	/**
      * Sorteaza actorii in functie de criteriu si creeaza mesajul dorit de
      * utilizator
      */
 	public void sortActors(ArrayList<Actor> actors) {
-		ArrayList<Actor> sortedActors = new ArrayList<Actor>();
+		ArrayList<Actor> sortedActors;
 		if (this.criteria.equals("average")) {
 			sortedActors = this.sortActorsAverage(actors);
 		} else if (this.criteria.equals("awards")) {
@@ -157,26 +277,11 @@ public class Query extends Action {
      */
 	private ArrayList<Actor> sortActorsAverage(ArrayList<Actor> actors) {
 		if (this.sortType.equals("asc"))
-			actors.sort(new RatingComparator());
+			actors.sort(new ActorRatingComparator());
 		else
-			actors.sort(new RatingComparator().reversed());
+			actors.sort(new ActorRatingComparator().reversed());
 		
 		return actors;
-	}
-	
-	/**
-     * Creeaza mesajul ce va reprezenta raspunsul cautarii utilizatorului
-     */
-	private void createMessageActor(ArrayList<Actor> actors) {
-		ArrayList<String> actorNames = new ArrayList<String>();
-		for (int i = 0; i < this.number; i++) {
-			if (i == actors.size())
-				break;
-			
-			actorNames.add(actors.get(i).getName());
-		}
-		
-		this.message = "Query result: " + actorNames.toString();
 	}
 	
 	/**
@@ -230,5 +335,87 @@ public class Query extends Action {
 			actors.sort(new NameComparator().reversed());
 		
 		return actorsWithWords;
+	}
+	
+	/**
+     * Sorteaza video-urile care respecta anul si genul in functie de
+     * criteriul specificat
+     */
+	public void sortShows(ArrayList<Video> shows) {
+		ArrayList<Video> showsFiltered = new ArrayList<Video>();
+		for (Video show : shows) {
+			if (!show.getYear().toString().equals(this.filters.getYear()))
+				continue;
+			
+			int hasGenre = 0;
+			if (this.filters.getGenre() != null) {
+				for (String genre : show.getGenres()) {
+					if (genre.equals(this.filters.getGenre())) {
+						hasGenre = 1;
+						break;
+					}
+				}
+			}
+			
+			if (hasGenre == 1)
+				showsFiltered.add(show);
+		}
+		
+		// in cazul in care trebuie interogate show-urile favorite elimin
+		// show-urile care nu sunt favorate de nimeni
+		if (this.criteria.equals("favorite")) {
+			for (Video show : shows) {
+				if (show.getNumberOfFavorites() == 0)
+					showsFiltered.remove(show);
+			}
+		}
+		
+		// in cazul in care trebuie interogate show-urile cu cele mai multe
+		// vizionari elimin pe cele care n-au fost vizionate
+		if (this.criteria.equals("most_viewed")) {
+			for (Video show : shows) {
+				if (show.getNumberOfViews() == 0)
+					showsFiltered.remove(show);
+			}
+		}
+		
+		Comparator<Video> comparator;
+		if (this.criteria.equals("ratings")) {
+			comparator = new ShowRatingComparator();
+		} else if (this.criteria.equals("favorite")) {
+			comparator = new FavoriteComparator();
+		} else if (this.criteria.equals("longest")) {
+			comparator = new DurationComparator();
+		} else {
+			comparator = new ViewsComparator();
+		}
+		
+		if (this.sortType.equals("asc"))
+			showsFiltered.sort(comparator);
+		else
+			showsFiltered.sort(comparator.reversed());
+		
+		this.createMessageShow(showsFiltered);
+	}
+	
+	/**
+     * Sorteaza utilizatorii dupa numarul de evaluari date video-urilor, daca
+     * utilizatorul nu a evaluat nimic atunci nu va aparea
+     */
+	public void sortUsers(ArrayList<User> users) {
+		ArrayList<User> usersFiltered = new ArrayList<User>();
+		for (User user : users) {
+			if (user.getNumberOfRatings() == 0)
+				continue;
+			
+			usersFiltered.add(user);
+		}
+		
+		if (this.sortType.equals("asc"))
+			usersFiltered.sort(new NumberOfRatingsComparator());
+		else
+			usersFiltered.sort(new NumberOfRatingsComparator().reversed());
+		
+		this.createMessageUser(usersFiltered);
 	}
 }

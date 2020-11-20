@@ -62,7 +62,7 @@ public class Command extends Action {
 		if (this.getType().equals("view"))
 			this.message = user.viewVideo(this.title);
 		else if (this.getType().equals("favorite"))
-			this.message = user.addFavourite(title);
+			this.message = user.addFavourite(show);
 		else
 			this.message = user.giveRating(show, this.grade, season);
 	}
