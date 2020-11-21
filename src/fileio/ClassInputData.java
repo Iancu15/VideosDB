@@ -60,13 +60,16 @@ public class ClassInputData {
 		ArrayList<MovieInputData> imovies;
 	    imovies = (ArrayList<MovieInputData>) input_movies;
 	    Map<String, Movie> movies = new HashMap<>();
+	    int MovieId = 1;
 	    
 	    for (MovieInputData imovie : imovies) {
 	    	Movie movie;
 	    	movie = new Movie(imovie.getTitle(), imovie.getYear(), 
-	    			imovie.getDuration(), imovie.getCast(), imovie.getGenres());
+	    			imovie.getDuration(), imovie.getCast(), imovie.getGenres(),
+	    															   MovieId);
 	    	
 	    	movies.put(movie.getTitle(), movie);
+	    	MovieId++;
 	    }
 	    
 	    return movies;
@@ -80,14 +83,17 @@ public class ClassInputData {
 		ArrayList<SerialInputData> iserials;
 	    iserials = (ArrayList<SerialInputData>) input_serials;
 	    Map<String, Serial> serials = new HashMap<>();
+	    int SerialId = 1;
 	    
 	    for (SerialInputData iserial : iserials) {
 	    	Serial serial;
 	    	serial = new Serial(iserial.getTitle(), iserial.getYear(), 
 	    								iserial.getCast(), iserial.getGenres(), 
-	    					   iserial.getNumberSeason(), iserial.getSeasons());
+	    					   iserial.getNumberSeason(), iserial.getSeasons(),
+	    					   										SerialId);
 	    	
 	    	serials.put(serial.getTitle(), serial);
+	    	SerialId++;
 	    }
 	    
 	    return serials;
@@ -117,7 +123,7 @@ public class ClassInputData {
 	    		
 	    	} else {
 	    		action = new Recommendation(iaction.getActionId(), 
-	    					   iaction.getActionType(), iaction.getActionType(),
+	    					   iaction.getActionType(), iaction.getType(),
 	    						     iaction.getUsername(), iaction.getGenre());
 	    	}
 	    	

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import actor.Actor;
+import entertainment.Genre;
 import entertainment.Video;
 import main.Database;
 import user.User;
@@ -27,6 +28,10 @@ public class Query extends Action {
 		String year = isNull(filters, 0);
 		String genre = isNull(filters, 1);
 		this.filters = new Filter(year, genre, filters.get(2), filters.get(3));
+	}
+
+	public Query() {
+		
 	}
 
 	public int getNumber() {
@@ -83,14 +88,15 @@ public class Query extends Action {
 	public void execute(Database db) {
 		db.updateShows();
 		db.updateActors();
-		ArrayList<User> users = new ArrayList<User>(db.getUsers().values());
 		
 		if (this.getType().equals("actors")) {
 			this.sortActors(db.getActors());
 		} else if (this.getType().equals("users")) {
-			this.sortUsers(users);
+			this.sortUsers(new ArrayList<User>(db.getUsers().values()));
+		} else if (this.getType().equals("movies")){
+			this.sortShows(new ArrayList<Video>(db.getMovies().values()));
 		} else {
-			this.sortShows(db.getShows());
+			this.sortShows(new ArrayList<Video>(db.getSerials().values()));
 		}
 	}
 	
@@ -123,6 +129,13 @@ public class Query extends Action {
 	}
 	
 	/**
+     * Returneaza un ShowRatingComparator, se foloseste in Recommendation
+     */
+	public Comparator<Video> getRatingComparator() {
+		return new ShowRatingComparator();
+	}
+	
+	/**
      * Clasa de tip Comparator care compara numele a 2 actori lexicografic
      */
 	private class NameComparator implements Comparator<Actor> {
@@ -140,10 +153,10 @@ public class Query extends Action {
 	private class AwardsComparator implements Comparator<Actor> {
 		@Override
 		public int compare(Actor actor1, Actor actor2) {
-			if (actor1.getRating().compareTo(actor2.getRating()) == 0)
+			if (actor1.getNumberOfAwards().compareTo(actor2.getNumberOfAwards()) == 0)
 				return actor1.getName().compareTo(actor2.getName());
 			
-			return actor1.getNumberOfAwards().compareTo(actor1.getNumberOfAwards());
+			return actor1.getNumberOfAwards().compareTo(actor2.getNumberOfAwards());
 	    }
 	}
 	
@@ -211,31 +224,33 @@ public class Query extends Action {
      * o interogare dupa actori
      */
 	private void createMessageActor(ArrayList<Actor> actors) {
-		ArrayList<String> actorNames = new ArrayList<String>();
+		ArrayList<Actor> actorNames = new ArrayList<Actor>();
 		for (int i = 0; i < this.number; i++) {
 			if (i == actors.size())
 				break;
 			
-			actorNames.add(actors.get(i).getName());
+			actorNames.add(actors.get(i));
 		}
 		
 		this.message = "Query result: " + actorNames.toString();
 	}
 	
 	/**
-     * Creeaza mesajul ce va reprezenta raspunsul cautarii utilizatorului pentru
-     * o interogare dupa video-uri
+     * Intoarce un sir cu titlurile primelor number video-uri din lista
+     * primita ca parametru. Parametrul type ajuta in intoarcerea unui mesaj
+     * personalizat pentru a fi folosit si in alte comenzi (Ex: Recommendation)
      */
-	private void createMessageShow(ArrayList<Video> shows) {
+	public String createMessageShow(ArrayList<Video> shows, String type,
+																int number) {
 		ArrayList<String> showNames = new ArrayList<String>();
-		for (int i = 0; i < this.number; i++) {
+		for (int i = 0; i < number; i++) {
 			if (i == shows.size())
 				break;
 			
 			showNames.add(shows.get(i).getTitle());
 		}
 		
-		this.message = "Query result: " + showNames.toString();
+		return type + " result: " + showNames.toString();
 	}
 	
 	/**
@@ -273,15 +288,21 @@ public class Query extends Action {
 	
 	/**
      * Sorteaza crescator sau descrescator o lista de actori in functie de
-     * evaluarea primita de acestia
+     * evaluarea primita. Nu se iau in considerare actorii fara evaluari
      */
 	private ArrayList<Actor> sortActorsAverage(ArrayList<Actor> actors) {
-		if (this.sortType.equals("asc"))
-			actors.sort(new ActorRatingComparator());
-		else
-			actors.sort(new ActorRatingComparator().reversed());
+		ArrayList<Actor> ratedActors = new ArrayList<Actor>();
+		for (Actor actor : actors) {
+			if (actor.getRating() != 0)
+				ratedActors.add(actor);
+		}
 		
-		return actors;
+		if (this.sortType.equals("asc"))
+			ratedActors.sort(new ActorRatingComparator());
+		else
+			ratedActors.sort(new ActorRatingComparator().reversed());
+		
+		return ratedActors;
 	}
 	
 	/**
@@ -319,10 +340,17 @@ public class Query extends Action {
 		for (Actor actor : actors) {
 			int hasWord = 1;
 			for (String word : this.filters.getWords()) {
-				if (!actor.getCareerDescription().toLowerCase().contains(word)) {
-					hasWord = 0;
-					break;
+				hasWord = 0;
+				// split imparte dupa space si '-'
+				for(String wordCopy : actor.getCareerDescription().split("[ -]")) {
+					if (wordCopy.toLowerCase().equals(word)) {
+						hasWord = 1;
+						break;
+					}
 				}
+
+				if (hasWord == 0)
+					break;
 			}
 			
 			if (hasWord == 1)
@@ -330,9 +358,9 @@ public class Query extends Action {
 		}
 		
 		if (this.sortType.equals("asc"))
-			actors.sort(new NameComparator());
+			actorsWithWords.sort(new NameComparator());
 		else
-			actors.sort(new NameComparator().reversed());
+			actorsWithWords.sort(new NameComparator().reversed());
 		
 		return actorsWithWords;
 	}
@@ -344,21 +372,20 @@ public class Query extends Action {
 	public void sortShows(ArrayList<Video> shows) {
 		ArrayList<Video> showsFiltered = new ArrayList<Video>();
 		for (Video show : shows) {
-			if (!show.getYear().toString().equals(this.filters.getYear()))
+			if (!show.getYear().toString().equals(this.filters.getYear())
+											&& this.filters.getYear() != null)
 				continue;
 			
-			int hasGenre = 0;
 			if (this.filters.getGenre() != null) {
-				for (String genre : show.getGenres()) {
+				for (Genre genre : show.getGenres()) {
 					if (genre.equals(this.filters.getGenre())) {
-						hasGenre = 1;
+						showsFiltered.add(show);
 						break;
 					}
 				}
-			}
-			
-			if (hasGenre == 1)
+			} else {
 				showsFiltered.add(show);
+			}
 		}
 		
 		// in cazul in care trebuie interogate show-urile favorite elimin
@@ -395,7 +422,8 @@ public class Query extends Action {
 		else
 			showsFiltered.sort(comparator.reversed());
 		
-		this.createMessageShow(showsFiltered);
+		this.message = this.createMessageShow(showsFiltered, "Query", 
+																   this.number);
 	}
 	
 	/**

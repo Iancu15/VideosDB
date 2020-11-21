@@ -12,10 +12,13 @@ public abstract class Action {
 	private String type;
 	
 	public Action(int actionId, String actionType, String type) {
-		super();
 		this.actionId = actionId;
 		this.actionType = actionType;
 		this.type = type;
+	}
+	
+	public Action() {
+		
 	}
 
 	public int getActionId() {

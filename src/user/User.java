@@ -115,12 +115,15 @@ public class User {
 	 */
 	public String addFavourite(Video show) {
 		String title = show.getTitle();
+		if (!this.history.containsKey(title)) 
+			return "error -> " + title + " is not seen";
+		
 		if (!this.favoriteShows.contains(title)) {
 			this.favoriteShows.add(title);
 			return "success -> " + title + " was added as favourite";
 		}
 		
-		return "fail -> You already have that show as favourite";
+		return "error -> " + title + " is already in favourite list";
 	}
 	
 	/**
@@ -188,5 +191,13 @@ public class User {
 		
 		return "success -> " + title + " was rated with " + grade + " by " +
 																	this.username;
+	}
+	
+	/**
+	 * La afisare intoarce numele utilizatorului
+	 */
+	@Override
+	public String toString() {
+		return this.getUsername();
 	}
 }

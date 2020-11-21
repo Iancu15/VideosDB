@@ -3,16 +3,22 @@ package action;
 import java.util.ArrayList;
 import java.util.List;
 
+import entertainment.Genre;
+import utils.Utils;
+
 public class Filter {
 	private String year;
-	private String genre;
+	private Genre genre;
 	private ArrayList<String> words;
 	private ArrayList<String> awards;
 	
 	public Filter(String year, String genre, List<String> words, 
 														List<String> awards) {
 		this.year = year;
-		this.genre = genre;
+		this.genre = null;
+		if (genre != null)
+			this.genre = Utils.stringToGenre(genre);
+		
 		this.words = (ArrayList<String>) words;
 		this.awards = (ArrayList<String>) awards;
 	}
@@ -25,11 +31,11 @@ public class Filter {
 		this.year = year;
 	}
 
-	public String getGenre() {
+	public Genre getGenre() {
 		return genre;
 	}
 
-	public void setGenre(String genre) {
+	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
 

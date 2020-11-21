@@ -89,7 +89,8 @@ public class Actor {
 			}
 		}
 		
-		this.rating = ratingActor/numberOfRatedShows;
+		if (ratingActor != 0)
+			this.rating = ratingActor/numberOfRatedShows;
 	}
 	
 	/**
@@ -99,5 +100,13 @@ public class Actor {
 		for (Integer numberOfAwards : this.awards.values()) {
 			this.numberOfAwards += numberOfAwards;
 		}
+	}
+	
+	/**
+	 * La afisare intoarce numele actorului
+	 */
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 }

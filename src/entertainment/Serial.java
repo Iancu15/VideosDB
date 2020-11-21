@@ -8,8 +8,9 @@ public class Serial extends Video {
 	private ArrayList<Season> seasons;
 	
 	public Serial(String title, int year, ArrayList<String> cast, 
-     ArrayList<String> genres, int numberOfSeasons, ArrayList<Season> seasons) {
-		super(title, year, cast, genres);
+     ArrayList<String> genres, int numberOfSeasons, ArrayList<Season> seasons,
+															  int SerialId) {
+		super(title, year, cast, genres, SerialId);
 		this.numberOfSeasons = numberOfSeasons;
 		this.seasons = seasons;
 		this.calculateDuration();

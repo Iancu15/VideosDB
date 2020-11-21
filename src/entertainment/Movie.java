@@ -9,8 +9,8 @@ public class Movie extends Video {
 	private ArrayList<Double> ratings;
 	
 	public Movie(String title, int year, int duration, ArrayList<String> cast,
-							                         ArrayList<String> genres) {
-		super(title, year, cast, genres);
+							            ArrayList<String> genres, int MovieId) {
+		super(title, year, cast, genres, MovieId);
 		this.duration = duration;
 		this.ratings = new ArrayList<Double>();
 	}
