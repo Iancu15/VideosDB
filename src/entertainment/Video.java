@@ -169,6 +169,6 @@ public abstract class Video {
 	 */
 	@Override
 	public String toString() {
-		return this.getTitle();
+		return this.getTitle() + " " + this.getVideoId() + "\n";
 	}
 }

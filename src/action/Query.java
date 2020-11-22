@@ -12,7 +12,7 @@ import user.User;
 import utils.Utils;
 
 public class Query extends Action {
-	private int number;
+	private Integer number;
 	private String sortType;
 	private String criteria;
 	private Filter filters;
@@ -225,6 +225,10 @@ public class Query extends Action {
      */
 	private void createMessageActor(ArrayList<Actor> actors) {
 		ArrayList<Actor> actorNames = new ArrayList<Actor>();
+		if (this.number == null) {
+			this.number = actors.size();
+		}
+		
 		for (int i = 0; i < this.number; i++) {
 			if (i == actors.size())
 				break;
@@ -341,8 +345,9 @@ public class Query extends Action {
 			int hasWord = 1;
 			for (String word : this.filters.getWords()) {
 				hasWord = 0;
-				// split imparte dupa space si '-'
-				for(String wordCopy : actor.getCareerDescription().split("[ -]")) {
+				// split imparte dupa space, cratima, punct si virgula
+				for(String wordCopy : 
+								actor.getCareerDescription().split("[ -.,]")) {
 					if (wordCopy.toLowerCase().equals(word)) {
 						hasWord = 1;
 						break;
@@ -373,7 +378,7 @@ public class Query extends Action {
 		ArrayList<Video> showsFiltered = new ArrayList<Video>();
 		for (Video show : shows) {
 			if (!show.getYear().toString().equals(this.filters.getYear())
-											&& this.filters.getYear() != null)
+					&& this.filters.getYear() != null || this.filters.getError())
 				continue;
 			
 			if (this.filters.getGenre() != null) {

@@ -11,13 +11,22 @@ public class Filter {
 	private Genre genre;
 	private ArrayList<String> words;
 	private ArrayList<String> awards;
+	/**
+	 * Este 1 in caz ca a cerut utilizatorul o interogare pentru un gen care nu
+	 * exista, altfel ramane 0
+	 */
+	private boolean error;
 	
 	public Filter(String year, String genre, List<String> words, 
 														List<String> awards) {
 		this.year = year;
 		this.genre = null;
-		if (genre != null)
+		this.error = false;
+		if (genre != null) {
 			this.genre = Utils.stringToGenre(genre);
+			if(this.genre == null)
+				this.error = true;
+		}
 		
 		this.words = (ArrayList<String>) words;
 		this.awards = (ArrayList<String>) awards;
@@ -53,5 +62,13 @@ public class Filter {
 
 	public void setAwards(ArrayList<String> awards) {
 		this.awards = awards;
+	}
+
+	public boolean getError() {
+		return error;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
 	}
 }

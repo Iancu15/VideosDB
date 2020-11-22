@@ -8,12 +8,14 @@ import java.util.ArrayList;
  */
 public class GenreList {
 	private Genre name;
-	private ArrayList<Video> shows;
+	private ArrayList<Video> movies;
+	private ArrayList<Video> serials;
 	private Integer views;
 	
 	public GenreList(Genre name) {
 		this.name = name;
-		this.shows = new ArrayList<Video>();
+		this.movies = new ArrayList<Video>();
+		this.serials = new ArrayList<Video>();
 		this.views = 0;
 	}
 	
@@ -29,12 +31,20 @@ public class GenreList {
 		this.name = name;
 	}
 
-	public ArrayList<Video> getShows() {
-		return shows;
+	public ArrayList<Video> getMovies() {
+		return movies;
 	}
 
-	public void setShows(ArrayList<Video> shows) {
-		this.shows = shows;
+	public void setMovies(ArrayList<Video> movies) {
+		this.movies = movies;
+	}
+
+	public ArrayList<Video> getSerials() {
+		return serials;
+	}
+
+	public void setSerials(ArrayList<Video> serials) {
+		this.serials = serials;
 	}
 
 	public Integer getViews() {
@@ -52,10 +62,23 @@ public class GenreList {
 	 */
 	public void calculateViews() {
 		int numberOfViews = 0;
-		for (Video show : this.shows) {
+		for (Video show : this.movies) {
+			numberOfViews += show.getNumberOfViews();
+		}
+		
+		for (Video show : this.serials) {
 			numberOfViews += show.getNumberOfViews();
 		}
 		
 		this.views = numberOfViews;
+	}
+	
+	/**
+	 * Intoarce toate informatiile legate de clasa, se foloseste pentru debug
+	 */
+	@Override
+	public String toString() {
+		return this.getName() + " " + this.getViews() + "\n" + this.getMovies()
+															+ this.getSerials();
 	}
 }

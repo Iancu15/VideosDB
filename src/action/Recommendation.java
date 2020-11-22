@@ -7,6 +7,7 @@ import entertainment.Genre;
 import entertainment.GenreList;
 import entertainment.Video;
 import main.Database;
+import user.User;
 import utils.Utils;
 
 public class Recommendation extends Action {
@@ -47,8 +48,18 @@ public class Recommendation extends Action {
 		db.updateShows();
 		db.updateGenres();
 		
+		// la standard intai cauta prin movies si dupa prin serials
 		if (this.getType().equals("standard")) {
-			this.getNotViewedShow(db, db.getShows(), "Standard");
+			ArrayList<Video> movies, serials;
+			movies= new ArrayList<Video>(db.getMovies().values());
+			serials = new ArrayList<Video>(db.getSerials().values());
+			movies.sort(new OrderComparator());
+			serials.sort(new OrderComparator());
+			
+			Integer found = this.getNotViewedShow(db, movies, "Standard");
+			if(found.equals(0))
+				this.getNotViewedShow(db, serials, "Standard");
+			
 			return;
 		} else if (this.getType().equals("best_unseen")) {
 			this.getRecommendationBestUnseen(db);
@@ -78,7 +89,8 @@ public class Recommendation extends Action {
 																String type) {
 		for (Video show : shows) {
 			String title = show.getTitle();
-			if (!db.getUser(user).getHistory().containsKey(title)) {
+			User user = db.getUser(this.user);
+			if (!db.getUser(this.user).getHistory().containsKey(title)) {
 				this.message = type + "Recommendation result: " + title;
 				return 1;
 			}
@@ -113,6 +125,21 @@ public class Recommendation extends Action {
 	    }
 	}
 	
+	/**
+     * Compara doua video-uri dupa ID pastrand astfel o ordine fireasca in
+     * baza de date
+     */
+	private class OrderComparator implements Comparator<Video> {
+		@Override
+		public int compare(Video video1, Video video2) {
+			return video1.getVideoId().compareTo(video2.getVideoId());
+	    }
+	}
+	
+	/**
+     * Compara doua video-uri dupa numarul total de selectari favorite ale
+     * utilizatorilor, in caz de egal se pastreaza ordinea din baza de date
+     */
 	private class FavoriteComparator implements Comparator<Video> {
 		@Override
 		public int compare(Video video1, Video video2) {
@@ -139,12 +166,18 @@ public class Recommendation extends Action {
      * intermediul metodei getNotViewedShow scrie rezultatul in mesaj. Daca 
      * nu s-a gasit niciun video nevizualizat in cel mai popular gen, atunci 
      * se cauta in al doilea cel mai popular gen, daca nici acolo se ia 
-     * urmatorul gen pana fie gaseste un show nevazut sau da eroare
+     * urmatorul gen pana fie gaseste un show nevazut sau da eroare. Filmele
+     * au prioritate peste seriale
      */
 	private void getRecommendationPopular(Database db) {
 		db.getGenres().sort(new GenreViewComparator().reversed());
 		for (GenreList genre : db.getGenres()) {
-			if (this.getNotViewedShow(db, genre.getShows(), "Popular") == 1)
+			genre.getMovies().sort(new OrderComparator());
+			genre.getSerials().sort(new OrderComparator());
+			if (this.getNotViewedShow(db, genre.getMovies(), "Popular") == 1)
+				return;
+			
+			if (this.getNotViewedShow(db, genre.getSerials(), "Popular") == 1)
 				return;
 		}
 	}
@@ -162,9 +195,13 @@ public class Recommendation extends Action {
 				showsFiltered.remove(show);
 		}
 
-		this.getNotViewedShow(db, db.getShows(), "Favorite");
+		this.getNotViewedShow(db, showsFiltered, "Favorite");
 	}
 	
+	/**
+     * Mesajul intoarce o lista cu video-uri nevazute de utilizator ordonate
+     * dupa scor
+     */
 	private void getRecommendationSearch(Database db) {
 		if (this.genre == null) {
 			this.message = "SearchRecommendation cannot be applied!";
@@ -181,7 +218,14 @@ public class Recommendation extends Action {
 		
 		// creez lista cu show-urile nevazute
 		ArrayList<Video> showsFromGenre = new ArrayList<Video>();
-		for (Video show : genreListSearch.getShows()) {
+		for (Video show : genreListSearch.getMovies()) {
+			String title = show.getTitle();
+			if (!db.getUser(user).getHistory().containsKey(title)) {
+				showsFromGenre.add(show);
+			}
+		}
+		
+		for (Video show : genreListSearch.getSerials()) {
 			String title = show.getTitle();
 			if (!db.getUser(user).getHistory().containsKey(title)) {
 				showsFromGenre.add(show);

@@ -24,7 +24,14 @@ public class Database {
 	private Map<String, Movie> movies;
 	private Map<String, Serial> serials;
 	private ArrayList<Action> actions;
+	/**
+	 * Un array cu toate video-urile
+	 */
 	private ArrayList<Video> shows;
+	/**
+	 * O lista cu genuri care au in componenta video-urile ce au respectivul
+	 * gen
+	 */
 	private ArrayList<GenreList> genres;
 	
 	public Database(Input input) {
@@ -123,9 +130,15 @@ public class Database {
 		this.genres = new ArrayList<GenreList>();
 		for(Genre genre : Genre.values()) {
 			GenreList genreList = new GenreList(genre);
-			for (Video show : this.shows) {
-				if (show.getGenres().contains(genre)) {
-					genreList.getShows().add(show);
+			for (Movie movie : this.movies.values()) {
+				if (movie.getGenres().contains(genre)) {
+					genreList.getMovies().add(movie);
+				}
+			}
+			
+			for (Serial serial : this.serials.values()) {
+				if(serial.getGenres().contains(genre)) {
+					genreList.getSerials().add(serial);
 				}
 			}
 			
