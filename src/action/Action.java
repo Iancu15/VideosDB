@@ -3,58 +3,54 @@ package action;
 import main.Database;
 
 public abstract class Action {
-	protected String message;
-	private int actionId;
-	private String actionType;
-	/**
-     * For queries type is object_type
+    protected String message;
+    private int actionId;
+    private String actionType;
+    /**
+     * Pentru interogari type-ul este tipul obiectului de interogat
      */
-	private String type;
-	
-	public Action(int actionId, String actionType, String type) {
-		this.actionId = actionId;
-		this.actionType = actionType;
-		this.type = type;
-	}
-	
-	public Action() {
-		
-	}
+    private String type;
 
-	public int getActionId() {
-		return actionId;
-	}
+    public Action(final int actionId, final String actionType, final String type) {
+        this.actionId = actionId;
+        this.actionType = actionType;
+        this.type = type;
+    }
 
-	public void setActionId(int actionId) {
-		this.actionId = actionId;
-	}
+    public Action() {
 
-	public String getActionType() {
-		return actionType;
-	}
+    }
 
-	public void setActionType(String actionType) {
-		this.actionType = actionType;
-	}
+    /**
+     * Intoarce ID-ul actiunii
+     */
+    public int getActionId() {
+        return actionId;
+    }
 
-	public String getType() {
-		return type;
-	}
+    /**
+     * Intoarce tipul actiunii:command, recommendation sau query
+     */
+    public String getActionType() {
+        return actionType;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    /**
+     * Intoarce tipul specific actiunii: most_viewed, rating etc.
+     */
+    public String getType() {
+        return type;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    /**
+     * Intoarce mesajul de iesire al actiunii
+     */
+    public String getMessage() {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	/**
+    /**
      * Executa actiunea aferenta obiectului
      */
-	public abstract void execute(Database db);
+    public abstract void execute(Database db);
 }

@@ -33,29 +33,29 @@ public final class Main {
      * @throws IOException in case of exceptions to reading / writing
      */
     public static void main(final String[] args) throws IOException {
-        File directory = new File(Constants.TESTS_PATH);
-        Path path = Paths.get(Constants.RESULT_PATH);
+        final File directory = new File(Constants.TESTS_PATH);
+        final Path path = Paths.get(Constants.RESULT_PATH);
         if (!Files.exists(path)) {
             Files.createDirectories(path);
         }
 
-        File outputDirectory = new File(Constants.RESULT_PATH);
+        final File outputDirectory = new File(Constants.RESULT_PATH);
 
-        Checker checker = new Checker();
+        final Checker checker = new Checker();
         checker.deleteFiles(outputDirectory.listFiles());
 
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
+        for (final File file : Objects.requireNonNull(directory.listFiles())) {
 
-            String filepath = Constants.OUT_PATH + file.getName();
-            File out = new File(filepath);
-            boolean isCreated = out.createNewFile();
+            final String filepath = Constants.OUT_PATH + file.getName();
+            final File out = new File(filepath);
+            final boolean isCreated = out.createNewFile();
             if (isCreated) {
                 action(file.getAbsolutePath(), filepath);
             }
         }
 
         checker.iterateFiles(Constants.RESULT_PATH, Constants.REF_PATH, Constants.TESTS_PATH);
-        Checkstyle test = new Checkstyle();
+        final Checkstyle test = new Checkstyle();
         test.testCheckstyle();
     }
 
@@ -65,19 +65,19 @@ public final class Main {
      * @throws IOException in case of exceptions to reading / writing
      */
     public static void action(final String filePath1,
-                              final String filePath2) throws IOException {
-        InputLoader inputLoader = new InputLoader(filePath1);
-        Input input = inputLoader.readData();
+            final String filePath2) throws IOException {
+        final InputLoader inputLoader = new InputLoader(filePath1);
+        final Input input = inputLoader.readData();
 
-        WriterPRO writer = new WriterPRO(filePath2);
-        Database db = new Database(input);
-        ArrayList<Action> actions = db.getActions();
-        
-        for (Action action : actions) {
-        	action.execute(db);
-        	writer.addObject(action.getActionId(), action.getMessage());
+        final WriterPRO writer = new WriterPRO(filePath2);
+        final Database db = new Database(input);
+        final ArrayList<Action> actions = db.getActions();
+
+        for (final Action action : actions) {
+            action.execute(db);
+            writer.addObject(action.getActionId(), action.getMessage());
         }
-        
+
         writer.writeFile();
     }
 }

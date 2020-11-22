@@ -20,7 +20,7 @@ public final class Checker {
      */
     public void deleteFiles(final File[] directory) {
         if (directory != null) {
-            for (File file : directory) {
+            for (final File file : directory) {
                 if (!file.delete()) {
                     System.out.println("nu s-a sters");
                 }
@@ -35,7 +35,7 @@ public final class Checker {
      * @throws IOException in case of exceptions to reading / writing
      */
     public List<QueryTest> createQueries(final File file) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        final ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(file, new TypeReference<List<QueryTest>>() {
         });
     }
@@ -73,27 +73,27 @@ public final class Checker {
         int score = 0;
         int length;
 
-        File dirOut = new File(dirOutPath);
-        File dirRef = new File(dirRefPath);
-        File input = new File(inputPath);
+        final File dirOut = new File(dirOutPath);
+        final File dirRef = new File(dirRefPath);
+        final File input = new File(inputPath);
 
-        File[] directoryList = dirOut.listFiles();
-        File[] directoryRef = dirRef.listFiles();
-        File[] inputDir = input.listFiles();
+        final File[] directoryList = dirOut.listFiles();
+        final File[] directoryRef = dirRef.listFiles();
+        final File[] inputDir = input.listFiles();
 
-        List<List<QueryTest>> listRefs = new ArrayList<>();
-        List<List<QueryTest>> listOut = new ArrayList<>();
+        final List<List<QueryTest>> listRefs = new ArrayList<>();
+        final List<List<QueryTest>> listOut = new ArrayList<>();
 
         if (directoryList != null) {
             Arrays.sort(directoryList);
-            for (File file : directoryList) {
+            for (final File file : directoryList) {
                 listOut.add(createQueries(file));
             }
         }
 
         if (directoryRef != null) {
             Arrays.sort(directoryRef);
-            for (File file : directoryRef) {
+            for (final File file : directoryRef) {
                 listRefs.add(createQueries(file));
             }
         }
@@ -105,9 +105,9 @@ public final class Checker {
                 length = Constants.MAX_LENGTH - inputDir[i].getName().length();
                 if (compareQueries(listRefs.get(i), listOut.get(i))) {
 
-                    char[] chars = new char[length];
+                    final char[] chars = new char[length];
                     Arrays.fill(chars, ' ');
-                    String s = new String(chars);
+                    final String s = new String(chars);
 
                     if (inputDir[i].getName().contains(Constants.LARGE)
                             || inputDir[i].getName().contains(Constants.NO_VALUES)) {
@@ -125,9 +125,9 @@ public final class Checker {
                         score += Constants.SINGLE_TEST;
                     }
                 } else {
-                    char[] chars = new char[length];
+                    final char[] chars = new char[length];
                     Arrays.fill(chars, ' ');
-                    String s = new String(chars);
+                    final String s = new String(chars);
                     System.out.println(inputDir[i].getName()
                             + s
                             + "FAILED (+0)");

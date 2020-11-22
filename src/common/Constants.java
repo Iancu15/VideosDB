@@ -9,6 +9,7 @@ public final class Constants {
     private Constants() {
     }
 
+    public static final Integer THREE = 3;
     public static final String DATABASE = "database";
     public static final String ACTORS = "actors";
     public static final String MOVIES = "movies";

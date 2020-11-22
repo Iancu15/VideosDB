@@ -41,7 +41,7 @@ public final class QueryTest {
                 || getClass() != o.getClass()) {
             return false;
         }
-        QueryTest queryTest = (QueryTest) o;
+        final QueryTest queryTest = (QueryTest) o;
         return id == queryTest.id
                 && Objects.equals(message, queryTest.message);
     }

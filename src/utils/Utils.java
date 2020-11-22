@@ -76,8 +76,8 @@ public final class Utils {
      */
     public static ArrayList<String> convertJSONArray(final JSONArray array) {
         if (array != null) {
-            ArrayList<String> finalArray = new ArrayList<>();
-            for (Object object : array) {
+            final ArrayList<String> finalArray = new ArrayList<>();
+            for (final Object object : array) {
                 finalArray.add((String) object);
             }
             return finalArray;
@@ -92,9 +92,9 @@ public final class Utils {
      * @return a map with ActorsAwardsa as key and Integer as value
      */
     public static Map<ActorsAwards, Integer> convertAwards(final JSONArray jsonActors) {
-        Map<ActorsAwards, Integer> awards = new LinkedHashMap<>();
+        final Map<ActorsAwards, Integer> awards = new LinkedHashMap<>();
 
-        for (Object iterator : jsonActors) {
+        for (final Object iterator : jsonActors) {
             awards.put(stringToAwards((String) ((JSONObject) iterator).get(Constants.AWARD_TYPE)),
                     Integer.parseInt(((JSONObject) iterator).get(Constants.NUMBER_OF_AWARDS)
                             .toString()));
@@ -109,10 +109,10 @@ public final class Utils {
      * @return a map with String as key and Integer as value
      */
     public static Map<String, Integer> watchedMovie(final JSONArray movies) {
-        Map<String, Integer> mapVideos = new LinkedHashMap<>();
+        final Map<String, Integer> mapVideos = new LinkedHashMap<>();
 
         if (movies != null) {
-            for (Object movie : movies) {
+            for (final Object movie : movies) {
                 mapVideos.put((String) ((JSONObject) movie).get(Constants.NAME),
                         Integer.parseInt(((JSONObject) movie).get(Constants.NUMBER_VIEWS)
                                 .toString()));

@@ -37,7 +37,7 @@ public final class InputLoader {
      * @return an Input object
      */
     public Input readData() {
-        JSONParser jsonParser = new JSONParser();
+        final JSONParser jsonParser = new JSONParser();
         List<ActionInputData> actions = null;
         List<ActorInputData> actors = new ArrayList<>();
         List<UserInputData> users = new ArrayList<>();
@@ -46,20 +46,20 @@ public final class InputLoader {
 
         try {
             // Parsing the contents of the JSON file
-            JSONObject jsonObject = (JSONObject) jsonParser
+            final JSONObject jsonObject = (JSONObject) jsonParser
                     .parse(new FileReader(inputPath));
-            JSONObject database = (JSONObject) jsonObject.get(Constants.DATABASE);
-            JSONArray jsonActors = (JSONArray)
+            final JSONObject database = (JSONObject) jsonObject.get(Constants.DATABASE);
+            final JSONArray jsonActors = (JSONArray)
                     database.get(Constants.ACTORS);
-            JSONArray jsonUsers = (JSONArray)
+            final JSONArray jsonUsers = (JSONArray)
                     database.get(Constants.USERS);
-            JSONArray jsonMovies = (JSONArray)
+            final JSONArray jsonMovies = (JSONArray)
                     database.get(Constants.MOVIES);
-            JSONArray jsonSerial = (JSONArray)
+            final JSONArray jsonSerial = (JSONArray)
                     database.get(Constants.SHOWS);
 
             if (jsonActors != null) {
-                for (Object jsonActor : jsonActors) {
+                for (final Object jsonActor : jsonActors) {
                     actors.add(new ActorInputData(
                             (String) ((JSONObject) jsonActor).get(Constants.NAME),
                             (String) ((JSONObject) jsonActor).get(Constants.DESCRIPTION),
@@ -74,7 +74,7 @@ public final class InputLoader {
             }
 
             if (jsonUsers != null) {
-                for (Object jsonUser : jsonUsers) {
+                for (final Object jsonUser : jsonUsers) {
                     users.add(new UserInputData(
                             (String) ((JSONObject) jsonUser).get(Constants.USERNAME),
                             (String) ((JSONObject) jsonUser).get(Constants.SUBSCRIPTION),
@@ -89,12 +89,12 @@ public final class InputLoader {
             }
 
             if (jsonSerial != null) {
-                for (Object jsonIterator : jsonSerial) {
+                for (final Object jsonIterator : jsonSerial) {
 
                     ArrayList<Season> seasons = new ArrayList<>();
 
                     if (((JSONObject) jsonIterator).get(Constants.SEASONS) != null) {
-                        for (Object iterator : (JSONArray) ((JSONObject) jsonIterator)
+                        for (final Object iterator : (JSONArray) ((JSONObject) jsonIterator)
                                 .get(Constants.SEASONS)) {
                             seasons.add(new Season(
                                     ((Long) ((JSONObject) iterator).get(Constants.CURRENT_SEASON))
@@ -125,7 +125,7 @@ public final class InputLoader {
             }
 
             if (jsonMovies != null) {
-                for (Object jsonIterator : jsonMovies) {
+                for (final Object jsonIterator : jsonMovies) {
                     movies.add(new MovieInputData(
                             (String) ((JSONObject) jsonIterator).get(Constants.NAME),
                             Utils.convertJSONArray((JSONArray) ((JSONObject) jsonIterator)
@@ -177,12 +177,12 @@ public final class InputLoader {
     public List<ActionInputData> readActions(final JSONObject jsonObject, final int size) {
 
         List<ActionInputData> actions = new ArrayList<>();
-        JSONArray jsonActions = (JSONArray)
+        final JSONArray jsonActions = (JSONArray)
                 jsonObject.get(Constants.ACTIONS);
 
         if (jsonActions != null) {
-            for (Object jsonIterator : jsonActions) {
-                String actionType = (String) ((JSONObject) jsonIterator)
+            for (final Object jsonIterator : jsonActions) {
+                final String actionType = (String) ((JSONObject) jsonIterator)
                         .get(Constants.ACTION_TYPE);
                 double grade = 0;
                 int season = 0;

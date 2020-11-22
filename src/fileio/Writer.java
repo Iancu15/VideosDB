@@ -33,7 +33,7 @@ public final class Writer {
      */
     public JSONObject writeFile(final int id, final String field,
                                 final String message) throws IOException {
-        JSONObject object = new JSONObject();
+        final JSONObject object = new JSONObject();
         object.put(Constants.ID_STRING, id);
         object.put(Constants.MESSAGE, message);
 
@@ -50,7 +50,7 @@ public final class Writer {
             file.write(array.toJSONString());
             file.flush();
             file.close();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }
