@@ -421,8 +421,7 @@ public final class Query extends Action {
             }
         }
 
-        // in cazul in care trebuie interogate show-urile favorite elimin
-        // show-urile care nu sunt favorate de nimeni
+        // elimin show-urile fara selectii de favorit pt interogare "favorite"
         if (this.criteria.equals("favorite")) {
             for (final Video show : shows) {
                 if (show.getNumberOfFavorites() == 0) {
@@ -431,11 +430,19 @@ public final class Query extends Action {
             }
         }
 
-        // in cazul in care trebuie interogate show-urile cu cele mai multe
-        // vizionari elimin pe cele care n-au fost vizionate
+        // elimin show-urile nevizionate pt interogare "most_viewed"
         if (this.criteria.equals("most_viewed")) {
             for (final Video show : shows) {
                 if (show.getNumberOfViews() == 0) {
+                    showsFiltered.remove(show);
+                }
+            }
+        }
+
+        // elimin show-urile fara rating pt interogare "ratings"
+        if (this.criteria.equals("ratings")) {
+            for (final Video show : shows) {
+                if (show.getRating() == 0) {
                     showsFiltered.remove(show);
                 }
             }
