@@ -1,0 +1,135 @@
+1. Citire
+
+Pentru citire am creat clasa Database care va stoca toate obiectele necesare:
+actori, filme, seriale, utilizatori si actiuni. Obiectele stocate sunt instante
+ale unor noi clase facute de mine pentru fiecare clasa de tip input (Ex:
+ActorInputData -> Actor). Acestea vor retine informatiile initiale alaturi de
+altele de care am nevoie pentru rularea actiunilor. Pentru a instantia aceste
+obiecte ma folosesc de clasa ClassInputData care transforma listele din clasa
+Input in liste sau hashmaps si se instantiaza in constructorul din Database.
+
+La citire actiunilor vor fi instantiate prin intermediul claselor care le
+reprezinta. Spre exemplu o actiune ce detine campuri de tip comenzi va ficare 
+instantiata drept un obiect Command. Toate aceste clase(Command, Recommendation
+si Query) mostenesc campuri si metode comune din clasa abstracta Action, cum ar
+fi ActionID sau metoda abstracta execute(). Fiecare dintre ele avand
+implementari diferite in interiorul clasei.
+
+Clasele Movie si Serial de asemenea mostenesc o clasa abstracta si anume Video
+care detine lucruri ce se regasesc in ambele tipuri de obiecte: durata, lista
+de genuri, anul aparitie, titlu etc.
+
+Clasa Database va functiona ca o baza de date si va oferi prin intermediul unor
+getteri listele si hashmap-urile la obiectele detinute pentru a putea fi
+utilizate in interiorul oricarei metode din proiect cu parametru Database.
+
+2. Parcurgerea actiunilor
+
+Actiunile se parcurg intr-un for si se executa metoda abstracta execute() care
+are implementarea aferenta tipului de actiune. Fiecare tip de actiune are
+subtipuri care reactioneaza in moduri diferite la input-uri, se va verifica
+prin conditii subtipul actiunii si se vor apela metodele aferente subtipului
+(subtipul este reprezentat de campul type din Action). In cazul in care
+actiunea va avea nevoie de informatii suplimentare, cum ar fi lista completa de
+filme, aceasta se va folosi de obiectul Database dat.
+
+3. Comenzi
+
+Clasa Command se afla in stransa legatura cu clasa User, instanta acesteia
+interactioneaza direct cu utilizatorul. Toate subtipurile de comenzi modifica
+informatii in obiectul User corespunzator si in celelalte obiecte de care se
+leaga acesta, astfel toate metodele ce implementeaza comenzile sunt scrise in
+clasa User.
+
+Prin intermediul comenzii, utilizatorul isi modifica relatia fata de un film sau
+un serial al carui titlu e stocat in actiune. In cazul vizualizarii si
+adaugarii la favorite a unui show, metodele interactioneaza doar cu campurile
+clasei User. Pentru vizualizare modifica history, iar pentru a adauga la
+favorite modifica lista favoriteShows.
+
+In cazul evaluarii unui show se modifca doar superficial clasa User, adevarata
+modificare efectuandu-se in clasele de tip Video(Movie si Serial) in care
+se va adauga rating-ul in lista corespunzatoare. Clasa Movie are direct in
+aceasta lista de scoruri, dar clasa Serial are liste doar in subclasele
+Season.
+
+In clasa User se adauga pur functional titlurile show-urilor carora le-a
+dat rating pentru a stii cand utilizatorul incearca sa evalueze mai mult de o
+data un show si a-i arata eroare in cazul respectiv.
+
+4. Actualizari
+
+In clasa Database avem metode ce contin cuvantul update si care au rol in a
+actualiza baza de date. In metodele execute() din clasele Query si
+Recommendation se actualizeaza datele din obiectele relevante actiunii pentru
+a avea o cautare cat mai exacta si a oferi utilizatorului un raspuns potrivit
+momentului curent.
+
+Intre actiuni de interogare si recomandare se afla comenzi care modifica baza 
+de date, modificari de care trebuie tinut cont. Comenzile sunt mult mai folosite
+decat interogarile si recomandarile asa ca am decis sa nu actualizez baza de
+date dupa fiecare comanda, ci sa o actualizez doar cand trebuie interactionat
+direct cu baza de date.
+
+Pentru actualiza show-urile trebuie ca acestea sa interactioneze cu utilizatorii
+care le-au vizualizat si adaugat la favorite pentru ca acestia detin toate
+datele relevante. In cazul scorului, in comenzi se pune accentul pe show-uri si 
+se stocheaza in acestea scorurile asa ca nu trebuie sa mai interactioneze cu 
+utilizatorii pentru a se actualiza in aceasta privinta.
+
+Singura data neconstanta a actorului este scorul acestuia care tine de scorurile
+filmelor in care a participat, astfel actorul e dependent in acest aspect de
+show-uri. Pentru a actualiza toti actorii trebuie intai sa fie actualizate
+toate show-urile pentru ca datele sa fie cat mai relevante momentului curent.
+
+5. Interogari
+
+Subtipurile interogarilor sunt tipul de obiecte care va fi interogat: actori,
+filme, seriale sau utilizatori. Pentru fiecare subtip exista o metoda
+corespunzatoare cu numele sortObiect care va fi apelata in metoda execute(). 
+Lista de obiecte ce trebuie parcursa si prelucrata se preia din baza de date.
+
+Fiecare interogare are specific pe langa tipul de obiecte si criteriul dupa care
+se ordoneaza datele respective. In interiorul fiecarei comenzi de tip sortObiect
+se verifica criteriul si se sorteaza corespunzator acestuia fie crescator, fie
+descrescator. Pentru fiecare criteriu al fiecarui tip de obiect am creat o clasa
+Comparator<Obiect> care se va folosi ca parametru in metoda sort() din
+ArrayList ce va fi apelata de listele aferente.
+
+Pentru afisare am metodele createMessageObiect care afiseaza primele number
+(numar dat de utilizator) obiecte din lista data ca parametru, acestea fiind
+apelate in metodele sortObiect.
+
+In cazul in care actiunea are si filtre, atunci intai se creeaza o lista noua
+cu obiectele care se conformeaza filtrului si deabea apoi sunt sortate dupa
+criteriu si afisate. Cum datele sunt deja actualizate din execute(), singura
+interactiune ce se va realiza va fi dintre obiectul Query si lista cu tipul
+de obiecte.
+
+6. Recomandari
+
+In aceasta clasa se refoloseste repetat metoda getNotViewedShow() care intoarce
+prima instanta din lista filtrata si sortata primita ca parametru. Implementarea
+sortarii si filtrarii se face asemanator cu implementarea de la interogare.
+In aceasta actiune se lucreaza cu show-uri si utilizatori si se afiseaza
+un show sau mai multe in cazul RecommendationSearch.
+
+Recomandarea are un camp special user care retine numele utilizatorului asupra
+caruia se face cautarea. Ca sa stiu ce filme si seriale voi afisa, trebuie sa
+stiu interactiunea dintre fiecare show si utilizator. Sunt mai multe prioritati
+care trebuie respectate in urmatoarea ordine dupa importanta: prioritatea 
+filmelor peste seriale, criteriul specific tipului si ordinea initiala a listei
+in baza de date(criteriul dupa ID).
+
+Un lucru specific care se regaseste in recomandare este impartirea show-urilor
+dupa gen. Pentru a face acest lucru am creat o noua clasa GenreList care
+contine toate show-urile aferente genului respectiv si peste care se face
+sortarea pentru RecommendationPopular.
+
+7. Scrierea
+
+Pentru a scrie ma folosesc de clasa WriterPRO care delega clasa Writer si
+contine o instanta de JSONArray. La fiecare executare de actiune se adauga
+id-ul si mesajul actiunii in JSONArray drept un JSONObject. Mesajul se creeaza
+si stocheaza in actiune in campul message, se modifica prin intermediul
+metodelor aferente si se acceseaza in main prin getter.
