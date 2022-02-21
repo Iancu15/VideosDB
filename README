@@ -9,7 +9,7 @@ obiecte ma folosesc de clasa ClassInputData care transforma listele din clasa
 Input in liste sau hashmaps si se instantiaza in constructorul din Database.
 
 La citire actiunilor vor fi instantiate prin intermediul claselor care le
-reprezinta. Spre exemplu o actiune ce detine campuri de tip comenzi va ficare 
+reprezinta. Spre exemplu o actiune ce detine campuri de tip comenzi va fi
 instantiata drept un obiect Command. Toate aceste clase(Command, Recommendation
 si Query) mostenesc campuri si metode comune din clasa abstracta Action, cum ar
 fi ActionID sau metoda abstracta execute(). Fiecare dintre ele avand
@@ -47,7 +47,7 @@ adaugarii la favorite a unui show, metodele interactioneaza doar cu campurile
 clasei User. Pentru vizualizare modifica history, iar pentru a adauga la
 favorite modifica lista favoriteShows.
 
-In cazul evaluarii unui show se modifca doar superficial clasa User, adevarata
+In cazul evaluarii unui show se modifica doar superficial clasa User, adevarata
 modificare efectuandu-se in clasele de tip Video(Movie si Serial) in care
 se va adauga rating-ul in lista corespunzatoare. Clasa Movie are direct in
 aceasta lista de scoruri, dar clasa Serial are liste doar in subclasele
@@ -71,7 +71,7 @@ decat interogarile si recomandarile asa ca am decis sa nu actualizez baza de
 date dupa fiecare comanda, ci sa o actualizez doar cand trebuie interactionat
 direct cu baza de date.
 
-Pentru actualiza show-urile trebuie ca acestea sa interactioneze cu utilizatorii
+Pentru a actualiza show-urile trebuie ca acestea sa interactioneze cu utilizatorii
 care le-au vizualizat si adaugat la favorite pentru ca acestia detin toate
 datele relevante. In cazul scorului, in comenzi se pune accentul pe show-uri si 
 se stocheaza in acestea scorurile asa ca nu trebuie sa mai interactioneze cu 
